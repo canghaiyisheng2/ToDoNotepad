@@ -3,12 +3,25 @@
  */
 package ToDoNotepad;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    boolean IfTheItemExist(String name)
+    {
+        //若写入成功，则可以查找到，返回ture，若删除成功，则找不到，返回false
+        App app = new App();
+        return app.ItemList.contains(name);
     }
+
+
+    @Test
+    void ShouldReturnTrueWhenAddSuccessed(){
+        App app = new App();
+        app.AddItem("跑步","9:00");
+        Assertions.assertEquals(true,IfTheItemExist("跑步"));
+    }
+
 }

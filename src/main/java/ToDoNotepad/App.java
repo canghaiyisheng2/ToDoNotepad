@@ -3,12 +3,15 @@
  */
 package ToDoNotepad;
 
+import java.util.ArrayList;
+
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
+
+    //定义一个arraylist叫Itemlist
+    public void AddItem(String name,String time)
+    {
+
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-    }
+
 }
