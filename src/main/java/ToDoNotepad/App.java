@@ -11,46 +11,60 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.RandomAccessFile;
-public class App {
+class Item{
+    String itemname;
+    String itemtime;
+    boolean isFinished;
+    public static String item(String name,String time, boolean isfin) //重载
+    {
+        itemname = name;
+        itemtime = time;
+        isFinished = isfin;
+        return itemname+itemtime+isFinshed;
+    }
+}
+
+class App{
     ArrayList<String> Itemlist = new ArrayList<String>();
-    //定义一个arraylist叫Itemlist
-    public void AddItem(String project,String time)throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException,InvocationTargetException,IOException{
+    public App//每次new 分配空间都会自动完成读入
+    {
+        Arraylist完成文件的信息读取。
+        以一个item为单位存放在arraylist里
+    }
+    public void WriteFile() throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException,InvocationTargetException,IOException{
+            Class c = Itemlist.getClass();
+            Method m = c.getMethod("add", Object.class);
+            BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"));
+            for(String s:Itemlist){
+                bw.write(s);
+                bw.newLine();
+                bw.flush();
+            }
+            bw.close();
+    }
+    public int  SearchTheItem（name）
+    {
+        找到条目，返回下标
+    }
+    public void AddTheItem(String name,String time) throws InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException //增加条目
+    {
+        //Item SingleItem = new Item(name,time,false);
+        //Itemlist.add(SingleItem);
         Class c = Itemlist.getClass();
         Method m = c.getMethod("add", Object.class);
-        m.invoke(Itemlist, project+time);
-        //System.out.println(array);
-        BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"));
-        for(String s:Itemlist){
-            bw.write(s);
-            bw.newLine();
-            bw.flush();
-        }
-        bw.close();
+        m.invoke(Itemlist, name+time);
+        WriteFile();
     }
-    public static boolean contains(String project){
-        StringBuilder stContent = null;
-        RandomAccessFile rFile = null;
-        if (new File("data.txt").exists()) {
-            try {
-                stContent = new StringBuilder();
-                rFile = new RandomAccessFile("data.txt", "r");
-                String line = null;
-                //rFile.readUTF();
-                //rFile.readInt();
-                while (null != (line = rFile.readLine())) {//循环遍历
-                    if(line=="project")
-                        return true;
-                }
-                rFile.close();
-            }
-            catch (Exception e) {
-                //异常处理
-                System.out.println("ERROR");
-            }
-        }
-        return false;
-
+    public void DeleteTheItem(name)
+    {
+        arraylist.remove(SearchTheItem（name）);
+        WriteFile();
     }
-
-
+    public void FinishTheItem(name)
+    {
+        SearchTheItem（name）;
+        根据下表修改isfinished变量。
+    }
 }
+
+
