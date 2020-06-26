@@ -13,7 +13,7 @@ class AppTest {
     {
         //若写入成功，则可以查找到，返回ture，若删除成功，则找不到，返回false
         App app = new App();
-        return app.ItemList.contains(name);
+        return app.contains(name);
     }
 
 

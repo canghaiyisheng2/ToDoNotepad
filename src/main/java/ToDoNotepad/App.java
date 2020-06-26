@@ -4,12 +4,51 @@
 package ToDoNotepad;
 
 import java.util.ArrayList;
-
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.File;
+import java.io.RandomAccessFile;
 public class App {
-
+    ArrayList<String> Itemlist = new ArrayList<String>();
     //定义一个arraylist叫Itemlist
-    public void AddItem(String name,String time)
-    {
+    public void AddItem(String project,String time)throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException,InvocationTargetException,IOException{
+        Class c = Itemlist.getClass();
+        Method m = c.getMethod("add", Object.class);
+        m.invoke(Itemlist, project+time);
+        //System.out.println(array);
+        BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"));
+        for(String s:Itemlist){
+            bw.write(s);
+            bw.newLine();
+            bw.flush();
+        }
+        bw.close();
+    }
+    public static boolean contains(String project){
+        StringBuilder stContent = null;
+        RandomAccessFile rFile = null;
+        if (new File("data.txt").exists()) {
+            try {
+                stContent = new StringBuilder();
+                rFile = new RandomAccessFile("data.txt", "r");
+                String line = null;
+                //rFile.readUTF();
+                //rFile.readInt();
+                while (null != (line = rFile.readLine())) {//循环遍历
+                    if(line=="project")
+                        return true;
+                }
+                rFile.close();
+            }
+            catch (Exception e) {
+                //异常处理
+                System.out.println("ERROR");
+            }
+        }
+        return false;
 
     }
 
