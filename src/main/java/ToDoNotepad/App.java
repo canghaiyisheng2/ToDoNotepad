@@ -3,68 +3,94 @@
  */
 package ToDoNotepad;
 
+import java.io.*;
 import java.util.ArrayList;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.File;
-import java.io.RandomAccessFile;
+
 class Item{
     String itemname;
     String itemtime;
-    boolean isFinished;
-    public static String item(String name,String time, boolean isfin) //重载
+    String isFinished; //涉及到文件读写问题,故改为字符串，暂时不影响使用
+    public Item(String name,String time)
     {
-        itemname = name;
-        itemtime = time;
-        isFinished = isfin;
-        return itemname+itemtime+isFinshed;
+        this.itemname = name;
+        this.itemtime = time;
+        this.isFinished = "False";
     }
 }
 
 class App{
-    ArrayList<String> Itemlist = new ArrayList<String>();
-    public App//每次new 分配空间都会自动完成读入
-    {
-        Arraylist完成文件的信息读取。
-        以一个item为单位存放在arraylist里
-    }
-    public void WriteFile() throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException,InvocationTargetException,IOException{
-            Class c = Itemlist.getClass();
-            Method m = c.getMethod("add", Object.class);
-            BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"));
-            for(String s:Itemlist){
-                bw.write(s);
-                bw.newLine();
-                bw.flush();
+    ArrayList<Item> Itemlist = new ArrayList<Item>();
+
+
+    public App()throws Exception{
+
+        FileReader fr = new FileReader("NotePad.txt");
+        char[] tempString = new char[100];
+        int num,line=0,positon=0;
+        while((num = fr.read(tempString))!=-1) {
+            Item item = new Item("","");
+            Itemlist.add(item);
+            String temp="";
+            for(int i=0;i<num;i++) {
+                if(tempString[i] == ' ') {
+                    if(positon == 0)
+                    Itemlist.get(line).itemname = temp;
+                    if(positon == 1)
+                        Itemlist.get(line).itemtime = temp;
+                    if(positon == 2)
+                        Itemlist.get(line).isFinished = temp;
+                    temp="";     //存放字符串
+                    positon ++;  //是属性的位置，三个属性012
+                }else {
+                    temp+=tempString[i];
+                }
             }
-            bw.close();
+            positon = 0;
+            line++;     //item的三项属性的组别
+        }
+
     }
-    public int  SearchTheItem（name）
-    {
-        找到条目，返回下标
+
+    public void WriteFile() throws Exception {
+        File file=new File("NotePad.txt");
+        BufferedWriter bw=new BufferedWriter(new FileWriter(file));
+        for(int i=0;i<Itemlist.size();i++){
+            bw.write(Itemlist.get(i).itemname+' ');
+            bw.write(Itemlist.get(i).itemtime+' ');
+            bw.write(Itemlist.get(i).isFinished+' ');
+            bw.newLine();
+        }
+        bw.close();
     }
-    public void AddTheItem(String name,String time) throws InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException //增加条目
+    public int  SearchTheItem(String name)
     {
-        //Item SingleItem = new Item(name,time,false);
-        //Itemlist.add(SingleItem);
-        Class c = Itemlist.getClass();
-        Method m = c.getMethod("add", Object.class);
-        m.invoke(Itemlist, name+time);
+        for(int i=0;i<Itemlist.size();i++){
+            if(Itemlist.get(i).itemname == name)
+                return i;
+        }
+        return -1;
+    }
+    public void AddTheItem(String name,String time) throws Exception  //增加条目
+    {
+        Item item = new Item(name,time);
+        Itemlist.add(item);
+        try {
+            WriteFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void DeleteTheItem(String name)
+    {
+
         WriteFile();
     }
-    public void DeleteTheItem(name)
-    {
-        arraylist.remove(SearchTheItem（name）);
-        WriteFile();
-    }
-    public void FinishTheItem(name)
-    {
-        SearchTheItem（name）;
-        根据下表修改isfinished变量。
-    }
+//    public void FinishTheItem(name)
+//    {
+//        SearchTheItem(name);
+//       // 根据下表修改isfinished变量。
+//    }
+
 }
 
 
