@@ -33,4 +33,10 @@ class AppTest {
         Assertions.assertEquals(false,IfTheItemExist("ฯดิ่"));
     }
 
+    @Test
+    void ShouldReturnTrueWhenFinishSuccessed() throws Exception {
+        App app = new App();
+        app.FinishTheItem("ฯดิ่");
+        Assertions.assertEquals(true,IfTheItemExist("ฯดิ่"));
+    }
 }

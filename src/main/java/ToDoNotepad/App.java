@@ -26,8 +26,6 @@ class App{
 
     public App()throws Exception{
 
-        //InputStreamReader read = new InputStreamReader(new FileInputStream("NotePad.txt"), "gbk");
-        //BufferedReader fr = new BufferedReader(read);
         BufferedReader fr = new BufferedReader(new FileReader("NotePad.txt"));
         String tempString = "";
         //read txt
@@ -70,7 +68,6 @@ class App{
         if (SearchTheItem(name) == -1) {
             Item item = new Item(name,time);
             Itemlist.add(item);
-            System.out.println(Itemlist.get(0).itemName);
         }
 
         try {
