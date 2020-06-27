@@ -7,15 +7,17 @@ import java.io.*;
 import java.util.ArrayList;
 
 class Item{
-    String itemname;
-    String itemtime;
-    String isFinished; //æ¶‰åŠåˆ°æ–‡ä»¶è¯»å†™é—®é¢˜,æ•…æ”¹ä¸ºå­—ç¬¦ä¸²ï¼Œæš‚æ—¶ä¸å½±å“ä½¿ç”¨
-    public Item(String name,String time)
+    String itemName;
+    String itemTime;
+    String isFinished; //Éæ¼°µ½ÎÄ¼ş¶ÁĞ´ÎÊÌâ,¹Ê¸ÄÎª×Ö·û´®£¬ÔİÊ±²»Ó°ÏìÊ¹ÓÃ
+
+    public Item(String name, String time)
     {
-        this.itemname = name;
-        this.itemtime = time;
+        this.itemName = name;
+        this.itemTime = time;
         this.isFinished = "False";
     }
+
 }
 
 class App{
@@ -24,29 +26,19 @@ class App{
 
     public App()throws Exception{
 
-        FileReader fr = new FileReader("NotePad.txt");
-        char[] tempString = new char[100];
-        int num,line=0,positon=0;
-        while((num = fr.read(tempString))!=-1) {
-            Item item = new Item("","");
+        //InputStreamReader read = new InputStreamReader(new FileInputStream("NotePad.txt"), "gbk");
+        //BufferedReader fr = new BufferedReader(read);
+        BufferedReader fr = new BufferedReader(new FileReader("NotePad.txt"));
+        String tempString = "";
+        //read txt
+        while((tempString = fr.readLine()) != null) {
+
+            String[] takon;
+            takon = tempString.split(" ");
+            Item item = new Item(takon[0], takon[1]);
+            item.isFinished = takon[2];
+
             Itemlist.add(item);
-            String temp="";
-            for(int i=0;i<num;i++) {
-                if(tempString[i] == ' ') {
-                    if(positon == 0)
-                    Itemlist.get(line).itemname = temp;
-                    if(positon == 1)
-                        Itemlist.get(line).itemtime = temp;
-                    if(positon == 2)
-                        Itemlist.get(line).isFinished = temp;
-                    temp="";     //å­˜æ”¾å­—ç¬¦ä¸²
-                    positon ++;  //æ˜¯å±æ€§çš„ä½ç½®ï¼Œä¸‰ä¸ªå±æ€§012
-                }else {
-                    temp+=tempString[i];
-                }
-            }
-            positon = 0;
-            line++;     //itemçš„ä¸‰é¡¹å±æ€§çš„ç»„åˆ«
         }
 
     }
@@ -54,42 +46,61 @@ class App{
     public void WriteFile() throws Exception {
         File file=new File("NotePad.txt");
         BufferedWriter bw=new BufferedWriter(new FileWriter(file));
-        for(int i=0;i<Itemlist.size();i++){
-            bw.write(Itemlist.get(i).itemname+' ');
-            bw.write(Itemlist.get(i).itemtime+' ');
-            bw.write(Itemlist.get(i).isFinished+' ');
+        for (Item item : Itemlist) {
+            bw.write(item.itemName + ' ');
+            bw.write(item.itemTime + ' ');
+            bw.write(item.isFinished + ' ');
             bw.newLine();
         }
         bw.close();
     }
+
     public int  SearchTheItem(String name)
     {
         for(int i=0;i<Itemlist.size();i++){
-            if(Itemlist.get(i).itemname == name)
+            if(Itemlist.get(i).itemName.equals(name))
                 return i;
         }
         return -1;
     }
-    public void AddTheItem(String name,String time) throws Exception  //å¢åŠ æ¡ç›®
+
+    public void AddTheItem(String name,String time)  //Ôö¼ÓÌõÄ¿
     {
-        Item item = new Item(name,time);
-        Itemlist.add(item);
+        //²»ÔÊĞíÍ¬ÃûÊÂÏî
+        if (SearchTheItem(name) == -1) {
+            Item item = new Item(name,time);
+            Itemlist.add(item);
+            System.out.println(Itemlist.get(0).itemName);
+        }
+
         try {
             WriteFile();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void DeleteTheItem(String name)
     {
-
-        WriteFile();
+        try {
+            int index = SearchTheItem(name);
+            Itemlist.remove(index);
+            WriteFile();
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Item not exist!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
-//    public void FinishTheItem(name)
-//    {
-//        SearchTheItem(name);
-//       // æ ¹æ®ä¸‹è¡¨ä¿®æ”¹isfinishedå˜é‡ã€‚
-//    }
+
+/*    public void FinishTheItem(name)
+      {
+        SearchTheItem(name);
+        ¸ù¾İÏÂ±íĞŞ¸Äisfinished±äÁ¿¡£
+       }*/
 
 }
 

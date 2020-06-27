@@ -11,26 +11,26 @@ class AppTest {
 
     boolean IfTheItemExist(String name)throws Exception
     {
-        //鑻ュ啓鍏ユ垚鍔燂紝鍒欏彲浠ユ煡鎵惧埌锛岃繑鍥瀟ure锛岃嫢鍒犻櫎鎴愬姛锛屽垯鎵句笉鍒帮紝杩斿洖false
+        //若写入成功，则可以查找到，返回ture，若删除成功，则找不到，返回false
         App app = new App();
 
-        if(app.SearchTheItem(name) != -1)
-        return true;
+        if(app.SearchTheItem(name) != -1)  return true;
+
         return false;
     }
-
 
     @Test
     void ShouldReturnTrueWhenAddSuccessed() throws Exception {
         App app = new App();
-        app.AddTheItem("娲楁尽","9:00");
-        Assertions.assertEquals(true,IfTheItemExist("娲楁尽"));
+        app.AddTheItem("洗澡","9:00");
+        Assertions.assertEquals(true,IfTheItemExist("洗澡"));
     }
+
     @Test
     void ShouldReturnTrueWhenDeleteSuccessed() throws Exception {
         App app = new App();
-        app.DeleteTheItem("娲楁尽");
-        Assertions.assertEquals(false,IfTheItemExist("娲楁尽"));
+        app.DeleteTheItem("洗澡");
+        Assertions.assertEquals(false,IfTheItemExist("洗澡"));
     }
 
 }
