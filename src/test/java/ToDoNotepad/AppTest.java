@@ -19,24 +19,38 @@ class AppTest {
         return false;
     }
 
-    @Test
-    void ShouldReturnTrueWhenAddSuccessed() throws Exception {
+    boolean IfTheItemFinished(String name) throws Exception {
         App app = new App();
-        app.AddTheItem("Ï´Ôè","9:00");
-        Assertions.assertEquals(true,IfTheItemExist("Ï´Ôè"));
+        int index = app.SearchTheItem(name);
+        if( index != -1)
+        {
+            if(app.Itemlist.get(index).getterisfinished().equals("True"))
+            return true;
+        }
+
+        return false;
     }
 
     @Test
-    void ShouldReturnTrueWhenDeleteSuccessed() throws Exception {
+    void ShouldReturnTrueWhenAddSuccessed() throws Exception {
         App app = new App();
-        app.DeleteTheItem("Ï´Ôè");
-        Assertions.assertEquals(false,IfTheItemExist("Ï´Ôè"));
+        app.AddTheItem("Taking Shower","9:00");
+        Assertions.assertEquals(true,IfTheItemExist("Taking Shower"));
     }
 
     @Test
     void ShouldReturnTrueWhenFinishSuccessed() throws Exception {
         App app = new App();
-        app.FinishTheItem("Ï´Ôè");
-        Assertions.assertEquals(true,IfTheItemExist("Ï´Ôè"));
+        app.FinishTheItem("Studying");
+        Assertions.assertEquals(true,IfTheItemFinished("Studying"));
     }
+
+    @Test
+    void ShouldReturnTrueWhenDeleteSuccessed() throws Exception {
+        App app = new App();
+        app.DeleteTheItem("Taking Shower");
+        Assertions.assertEquals(false,IfTheItemExist("Taking Shower"));
+    }
+
+
 }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class Item{
-    String itemName;
-    String itemTime;
-    String isFinished; //涉及到文件读写问题,故改为字符串，暂时不影响使用
+    private String itemName;
+    private String itemTime;
+    private String isFinished; //涉及到文件读写问题,故改为字符串，暂时不影响使用
 
     public Item(String name, String time)
     {
@@ -19,7 +19,14 @@ class Item{
         this.isFinished = "False";
     }
 
+    public String gettername(){ return itemName; }
+    public String gettertime(){ return itemTime; }
+    public String getterisfinished(){ return isFinished; }
+
+    public void FinishTheItem(){ this.isFinished = "True";}
+
 }
+
 
 class App{
     ArrayList<Item> Itemlist = new ArrayList<Item>();
@@ -33,47 +40,36 @@ class App{
         while((tempString = fr.readLine()) != null) {
 
             String[] takon;
-            takon = tempString.split(" ");
-            Item item = new Item(takon[0], takon[1]);
-            item.isFinished = takon[2];
-
+            takon = tempString.split(",");
+            Item item = new Item(takon[0], takon[1]);  //默认未完成
+            if(takon[2].equals("True")) item.FinishTheItem();  //默认是未完成，若读取的是完成，设为完成
             Itemlist.add(item);
-
-
-            for(int i=0;;i++){
-                System.out.println("输入1修改：\n输入0退出修改：");
-                Scanner w =new Scanner(System.in);
-                int s = w.nextInt();
-                if(s==0)break;
-                else if(s==1){
-                    System.out.println("你选择把第几个待办事件确认为完成: ");
-                    Scanner n = new Scanner(System.in);
-                    int k = n.nextInt();
-                    change(k);
-                }
-            }
 
         }
 
     }
+
 
     public void WriteFile() throws Exception {
         File file=new File("NotePad.txt");
         BufferedWriter bw=new BufferedWriter(new FileWriter(file));
         for (Item item : Itemlist) {
-            bw.write(item.itemName + ' ');
-            bw.write(item.itemTime + ' ');
-            bw.write(item.isFinished + ' ');
+            bw.write(item.gettername() + ',');
+            bw.write(item.gettertime() + ',');
+            bw.write(item.getterisfinished() + ',');
             bw.newLine();
         }
         bw.close();
     }
 
+
     public int  SearchTheItem(String name)
     {
         for(int i=0;i<Itemlist.size();i++){
-            if(Itemlist.get(i).itemName.equals(name))
+            if(Itemlist.get(i).gettername().equals(name))
                 return i;
+
+
         }
         return -1;
     }
@@ -102,28 +98,38 @@ class App{
             WriteFile();
         }
         catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Item not exist!");
+            System.out.println("The item is not exist!");
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
-    public void change( int k)
-    {
-        Itemlist.get(k).isFinished="Ture";
-        Itemlist.get(k).toString();
+
+
+
+    public void FinishTheItem(String name){
+         int index = SearchTheItem(name);
+         if( index != -1){
+             if(Itemlist.get(index).getterisfinished().equals("False"))
+             {
+                 Itemlist.get(index).FinishTheItem();
+             }
+             else
+             {
+                 System.out.println("The item has finished before!");
+             }
+         }
+         else {
+             System.out.println("The item is not existfin!");
+         }
+
+        try {
+            WriteFile();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
-
-
-
-
-/*    public void FinishTheItem(name)
-      {
-        SearchTheItem(name);
-        根据下表修改isfinished变量。
-       }*/
 
 }
 

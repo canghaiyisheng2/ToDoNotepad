@@ -1,1 +1,3 @@
-洗澡 9:00 False 
+running,9:00,False,
+hang out,11:00,False,
+Studying,12:00,True,
