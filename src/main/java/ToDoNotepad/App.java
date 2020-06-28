@@ -5,6 +5,7 @@ package ToDoNotepad;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 class Item{
     String itemName;
@@ -37,6 +38,21 @@ class App{
             item.isFinished = takon[2];
 
             Itemlist.add(item);
+
+
+            for(int i=0;;i++){
+                System.out.println("输入1修改：\n输入0退出修改：");
+                Scanner w =new Scanner(System.in);
+                int s = w.nextInt();
+                if(s==0)break;
+                else if(s==1){
+                    System.out.println("你选择把第几个待办事件确认为完成: ");
+                    Scanner n = new Scanner(System.in);
+                    int k = n.nextInt();
+                    change(k);
+                }
+            }
+
         }
 
     }
@@ -92,6 +108,16 @@ class App{
             e.printStackTrace();
         }
     }
+    public void change( int k)
+    {
+        Itemlist.get(k).isFinished="Ture";
+        Itemlist.get(k).toString();
+    }
+
+
+
+
+
 
 /*    public void FinishTheItem(name)
       {
